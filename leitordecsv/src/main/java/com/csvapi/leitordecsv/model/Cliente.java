@@ -7,11 +7,25 @@ import lombok.Data;
 @Data
 public class Cliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.TABLE,
+            generator = "cliente_table_generator"
+
+    )
+    @TableGenerator(
+            name = "cliente_table_generator",
+            table = "id_generator",
+            pkColumnName = "entity_name",
+            valueColumnName = "next_val",
+            pkColumnValue = "cliente",
+            allocationSize = 50
+    )
     private Long id;
 
     private String nome;
 
-    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column (unique = true)
+    private String codigoExterno;
 }
