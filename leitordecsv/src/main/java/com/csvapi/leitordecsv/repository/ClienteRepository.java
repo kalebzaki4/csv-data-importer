@@ -8,14 +8,4 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    boolean existsByEmail(String email);
-
-    Optional<Cliente> findByCodigoExterno(String s);
-
-    boolean existsByCodigoExterno(String codigoCliente);
-
-    @Query("SELECT c.codigoExterno FROM Cliente c")
-    List<String> findCodigoExterno();
-
-    List<Cliente> findAll();
 }

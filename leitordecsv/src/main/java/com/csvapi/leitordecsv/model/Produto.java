@@ -10,8 +10,16 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column ( unique = true )
     private String codigoExterno;
 
+    @Column
     private String nome;
+
+    @Column
+    private String categoria;
+
+    @Column
+    private String marca;
+
 }

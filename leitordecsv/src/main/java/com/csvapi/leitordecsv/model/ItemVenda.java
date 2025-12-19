@@ -11,13 +11,16 @@ public class ItemVenda {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "venda_id", nullable = false)
-    private Venda venda;
-
-    @ManyToOne
-    @JoinColumn(name = "produto_id", nullable = false)
+    @JoinColumn(name = "produto_id")
     private Produto produto;
 
+    @Column
     private Integer quantidade;
-    private Double precoUnitarioNaVenda;
+
+    @Column
+    private Double precoUnitario;
+
+    @ManyToOne
+    @JoinColumn(name = "venda_id")
+    private Venda venda;
 }
