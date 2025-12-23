@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -35,6 +36,12 @@ public class CsvImportService {
 
     @Transactional
     public void LerCSV() {
+
+        itemVendaRepository.deleteAllInBatch(); // Apaga itens primeiro
+        vendaRepository.deleteAllInBatch();
+        produtoRepository.deleteAllInBatch();
+        clienteRepository.deleteAllInBatch();
+
         Map<String, Cliente> mapaClientes = new HashMap<>();
         Map<String, Produto> mapaProdutos = new HashMap<>();
         Map<String, Venda> mapaVendas = new HashMap<>();
@@ -51,11 +58,17 @@ public class CsvImportService {
 
             while ((line = reader.readNext()) != null) {
                 try {
-                    String clienteNome = line[0].trim();
-                    String produtoNome = line[1].trim();
-                    String vendaId = line[2].trim();
-                    Double preco = Double.parseDouble(line[8].trim().replace(",", "."));
-                    Integer quantidade = Integer.parseInt(line[9].trim());
+                    String vendaId = line[0].trim();
+                    String clienteNome = line[3].trim();
+                    String produtoNome = line[5].trim();
+                    String categoria = line[6].trim();
+                    String marca = line[7].trim();
+                    Double preco = Double.parseDouble(line[9].trim().replace(",", "."));
+                    Integer quantidade = Integer.parseInt(line[8].trim());
+
+                    String dataStr = line[1].trim();
+                    LocalDate dataVenda = LocalDate.parse(dataStr);
+
 
                     Cliente cliente = mapaClientes.get(clienteNome);
                     if (cliente == null) {
@@ -69,6 +82,8 @@ public class CsvImportService {
                     if (produto == null) {
                         produto = new Produto();
                         produto.setNome(produtoNome);
+                        produto.setMarca(marca);
+                        produto.setCategoria(categoria);
                         mapaProdutos.put(produtoNome, produto);
                         bufferProdutos.add(produto);
                     }
@@ -77,9 +92,15 @@ public class CsvImportService {
                     if (venda == null) {
                         venda = new Venda();
                         venda.setCliente(cliente);
+
+                        venda.setDataVenda(dataVenda);
+                        venda.setValorTotal(0.0);
+
                         mapaVendas.put(vendaId, venda);
                         bufferVendas.add(venda);
                     }
+
+                    venda.setValorTotal(venda.getValorTotal() + (preco * quantidade));
 
                     ItemVenda itemVenda = new ItemVenda();
                     itemVenda.setVenda(venda);

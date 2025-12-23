@@ -20,5 +20,5 @@ public class Venda {
     private Cliente cliente;
 
     @Column
-    private Double valorTotal;
+    private Double valorTotal = 0.0;
 }
