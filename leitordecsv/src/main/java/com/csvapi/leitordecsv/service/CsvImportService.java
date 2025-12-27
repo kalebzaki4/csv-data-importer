@@ -118,7 +118,6 @@ public class CsvImportService {
                     }
 
                 } catch (Exception e) {
-                    // Se qualquer erro ocorrer na linha, ele cai aqui e pula para a próxima
                     System.err.println("Erro ao processar linha: " + Arrays.toString(line) + " | Erro: " + e.getMessage());
                 }
             }
