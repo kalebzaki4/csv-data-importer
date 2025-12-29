@@ -26,7 +26,7 @@ public class CsvImportService {
     public CsvImportService(ClienteRepository clienteRepository, VendaRepository vendaRepository,
                             ProdutoRepository produtoRepository, ItemVendaRepository itemVendaRepository) {
         this.clienteRepository = clienteRepository;
-        this.vendaRepository = vendaRepository;
+        this.vendaRepository = vendaRepository; 
         this.produtoRepository = produtoRepository;
         this.itemVendaRepository = itemVendaRepository;
     }
